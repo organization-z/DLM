@@ -4,6 +4,7 @@ int fetch_dl_data_http(Download *download)
 {
     //getting the header of the file
     CURL *handle;
+    CURLcode res;
     download -> header = malloc(0);
     handle = curl_easy_init();
     curl_easy_setopt(handle, CURLOPT_URL, download->url);
@@ -13,13 +14,17 @@ int fetch_dl_data_http(Download *download)
     // curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, get_header);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, download);
-    curl_easy_perform(handle);
+    res = curl_easy_perform(handle);
     curl_easy_cleanup(handle);
     //
+    // if(res != CURLE_OK)
+    // {
+    //     fprintf(stderr, "failed to get header: %s\n", curl_easy_strerror(res));
+    //     return -1;
+    // }
     extract_header_data(download);
-    // printf("%d\n%s", download->size, download->header);
-
-
+    printf("%ld\n%s\n%s", download->size, download->content_type ,download->header);
+    return 0;
 }
 size_t get_header(char *buffer, size_t size, size_t nmemb, void *download)
 {
@@ -33,7 +38,7 @@ void extract_header_data(Download *download)
     char *sdp = strstr(download->header, "Content-Length: "); // start of data pointer
     
     //getting content length
-    int size = 0;
+    long size = 0;
     if (sdp == NULL)
     {
         //if Content-Length is not provided the download size will be -1
@@ -42,7 +47,7 @@ void extract_header_data(Download *download)
     else
     {
         sdp += strlen("Content-Length: ");
-        while (*sdp != '\n' && *sdp != '\r' && *sdp != '\0' && *sdp != ';')
+        while (*sdp >= '0' && *sdp <= '9')
         {
             size *= 10; size += (*sdp) - '0';
             sdp++;
@@ -63,7 +68,7 @@ void extract_header_data(Download *download)
     {
         sdp += strlen("Content-Type: ");
         int i = 0 ;
-        while (*sdp != '\n' && *sdp != '\r' && *sdp != '\0' && *sdp != ';')
+        while (*sdp != '\n' && *sdp != '\r' && *sdp != '\0' && *sdp != ';' && *sdp != ',')
         {
             cntntype = realloc(cntntype, (strlen(cntntype) + 2) * sizeof(char));
             cntntype[i] = *sdp;
@@ -72,6 +77,5 @@ void extract_header_data(Download *download)
         }
         download->content_type = cntntype;
     }
-    //free(sdp);
-    //free(download->header);
+    //
 }

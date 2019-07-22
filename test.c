@@ -4,36 +4,20 @@
 #include "download.h"
 #endif
 
-#ifndef stdioH
-#define stdioH
-#include <stdio.h>
-#endif
-
-#ifndef stringH
-#define stringH
-#include <string.h>
-#endif
-
-#ifndef stdlibH
-#define stdlibH
-#include <stdlib.h>
-#endif
-
-#ifndef curlH
-#define curlH
-#include <curl/curl.h>
-#endif
-
 #ifndef ddfH
 #define ddfH
 #include "dl-data-fetcher.h"
 #endif
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <curl/curl.h>
 
 int main(void)
 {
   Download d;
-  d.url = "http://example.com";
+  d.url = "http://cdn.p30download.com/?b=p30dl-software&f=Windows.10.Professional.v1903.Jul.2019.x86_p30download.com.part1.rar";
   fetch_dl_data_http(&d);
 
   return 0;
