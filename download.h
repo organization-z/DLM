@@ -12,6 +12,6 @@ typedef struct DownloadStrct
     int max_cons_allowed;
     unsigned int spd_lmt;
     unsigned int progrees;
-    int size;
+    long size;
 
 } Download;
