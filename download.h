@@ -1,4 +1,4 @@
-typedef struct DownloadStrct
+typedef struct
 {
     unsigned int type;
     void *dl_engine;

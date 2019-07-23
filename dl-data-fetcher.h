@@ -8,6 +8,12 @@
 #include <stdlib.h>
 #include <curl/curl.h>
 
+typedef struct
+{
+    int8_t code;
+    int8_t sec_code;
+    char *msg;
+}res_st; // response struct
 int fetch_dl_data_http(Download *);
 size_t get_header(char *, size_t, size_t, void *);
-void extract_header_data(Download *);
+res_st extract_header_data(Download *);

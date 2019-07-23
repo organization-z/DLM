@@ -17,7 +17,7 @@
 int main(void)
 {
   Download d;
-  d.url = "http://cdn.p30download.com/?b=p30dl-software&f=Windows.10.Professional.v1903.Jul.2019.x86_p30download.com.part1.rar";
+  d.url = "http://cdn.p30download.com/?b=p30dl-software&f=PowerArchiver.2019.Standard.v19.00.50_p30download.com.rar";
   fetch_dl_data_http(&d);
 
   return 0;
