@@ -18,11 +18,17 @@ enum {
     DL_STATUS_STOPPED,
 };
 
+enum {
+    PROXY_TYPE_HTTP,
+    PROXY_TYPE_SOCKS,
+    // TODO add more proxy types if needed
+};
+
 typedef struct {
     uint64_t content_length;
-    // TODO: content_MD5
+    char[] content_MD5;
     bool accept_ranges;
-    // TODO: content_type
+    char[] content_type;
 } dl_header;
 
 typedef struct {
@@ -40,7 +46,7 @@ typedef struct {
     char *auth;
     char *proxy;
     char *proxy_auth;
-    uint8_t proxy_type; // TODO add enum PROXY_TYPE
+    uint8_t proxy_type;
 
     char *save_location;
     char *file_name;

@@ -1,6 +1,8 @@
 #ifndef DLM_QUEUE_H
 #define DLM_QUEUE_H
 
+#include <pthread.h>
+
 #include "dl.h"
 
 #define MAX_QUEUE_CAP 1000
@@ -13,10 +15,11 @@ enum {
 typedef struct {
     uint8_t type;
     bool is_running;
+    bool lock;
 
     char *default_proxy;
     char *default_proxy_auth;
-    uint8_t default_proxy_type; // TODO add enum PROXY_TYPE
+    uint8_t default_proxy_type;
 
     char *default_save_location;
 
@@ -47,16 +50,18 @@ typedef struct {
 
 extern queue queues[100];
 
-// add_queue(...);
+void add_queue(queue *);
 
-// delete_queue(queue *);
+void delete_queue(queue *);
 
 
-// start_queue(queue *);
-// stop_queue(queue *);
+void start_queue(queue *);
+void stop_queue(queue *);
 
-// run_sync_queue(queue *);
-// run_async_queue(queue *);
+/* required by start_queue
+ */
+void run_sync_queue(queue *);
+void run_async_queue(queue *);
 
 void add_dl_to_queue(queue *,dl *);
 void remove_dl_from_queue(queue *,dl *);
